@@ -1,0 +1,29 @@
+{
+  "name": "backend-service",
+  "version": "1.0.0",
+  "description": "simple scalable, fault tolerant backend services for user auth",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Will-Hsu/backend-service.git"
+  },
+  "author": "Will Hsu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Will-Hsu/backend-service/issues"
+  },
+  "homepage": "https://github.com/Will-Hsu/backend-service#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.19.2",
+    "mongoose": "^8.3.3"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  }
+}
