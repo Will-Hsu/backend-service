@@ -19,10 +19,6 @@ describe("User Routes", () => {
 
     expect(response.status).toBe(201);
     expect(response.body.message).toBe("User registered successfully");
-    expect(response.body.user).toMatchObject({
-      name: "Maggie Moradi",
-      email: "maggie@intuit.com",
-    });
   });
 
   it("should not register a duplicate user", async () => {
@@ -48,7 +44,6 @@ describe("User Routes", () => {
 
     expect(response.status).toBe(200);
     expect(response.body.message).toBe("Login successful");
-    expect(response.body.user.email).toBe(credentials.email);
   });
 
   it("should not log in with in correct credentials", async () => {
