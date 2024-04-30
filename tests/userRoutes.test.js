@@ -19,7 +19,10 @@ describe("User Routes", () => {
 
     expect(response.status).toBe(201);
     expect(response.body.message).toBe("User registered successfully");
-    expect(response.body.user).toMatchObject(userData);
+    expect(response.body.user).toMatchObject({
+      username: "maggiemoradi",
+      email: "maggie@intuit.com",
+    });
   });
 
   it("should not register a duplicate user", async () => {

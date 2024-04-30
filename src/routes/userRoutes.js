@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
+const bcrypt = require("bcrypt");
 
 let users = [];
 
 // Register a new user
-router.post("/register", (req, res) => {
+router.post("/register", async (req, res) => {
   const { username, password, email } = req.body;
 
   // check if the request body is valid
@@ -19,17 +20,24 @@ router.post("/register", (req, res) => {
     return res.status(400).json({ error: "Username already exists" });
   }
 
-  // Create new user object
-  const newUser = { username, password, email };
-  users.push(newUser);
+  try {
+    // Hash and salt the password
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  res
-    .status(201)
-    .json({ message: "User registered successfully", user: newUser });
+    const newUser = { username, password: hashedPassword, email };
+    users.push(newUser);
+
+    res.status(201).json({
+      message: "User registered successfully",
+      user: { username, email },
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 // User login
-router.post("/login", (req, res) => {
+router.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
   // check if the request body is valid
@@ -42,12 +50,21 @@ router.post("/login", (req, res) => {
   // Find user by username
   const user = users.find((user) => user.username === username);
 
-  // Check if user exists and password matches
-  if (!user || user.password !== password) {
+  // Check if user exists
+  if (!user) {
     return res.status(401).json({ error: "Invalid username or password" });
   }
 
-  res.json({ message: "Login successful", user });
+  try {
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      return res.status(401).json({ error: "Invalid username or password" });
+    }
+
+    res.json({ message: "Login successful", user });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 module.exports = router;
