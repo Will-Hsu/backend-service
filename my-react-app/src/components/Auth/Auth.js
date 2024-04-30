@@ -40,30 +40,21 @@ const Auth = ({ newUser }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (isSignup) {
-        // Call register function from auth.js
-        const response = await register(formData);
-        const { token } = response.data.token;
+      // Call register function from auth.js
+      const response = isSignup
+        ? await register(formData)
+        : await login(formData);
 
-        // Store token in local storage
-        localStorage.setItem("token", token);
+      const { token } = response.data.token;
+      const decoded = jwt_decode(token);
 
-        // Handle successful registration
-        console.log("Registration successful");
-        navigate("/profile");
-      } else {
-        // Call login function from auth.js
-        const response = await login(formData);
-        const { token } = response.data.token;
+      // Store token and user in local storage
+      localStorage.setItem("user", decoded.userName);
+      localStorage.setItem("token", token);
 
-        // decode token and store user name in local storage
-        const decoded = jwt_decode(token);
-        localStorage.setItem("user", decoded.userName);
-
-        // Handle successful login
-        console.log("Login successful", token);
-        navigate("/profile");
-      }
+      // Handle successful registration
+      console.log("Authenticated successfully", token);
+      navigate("/profile");
     } catch (error) {
       // Handle error
       console.error("Error occurred:", error);
