@@ -4,6 +4,8 @@ on: [push]
 jobs:
   run-defined-service-tests:
     runs-on: ubuntu-latest
+    env:
+      SECRET_KEY: "test-secret"
     defaults:
       run:
         working-directory: ./backend
