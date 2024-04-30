@@ -1,0 +1,25 @@
+name: GitHub Actions
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display Event Information
+        run: echo “🎉 The job was automatically triggered by a ${{ github.event_name }} event.”
+      - name: Display Runner Information
+        run: echo “🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!”
+      - name: Display Repository Information
+        run: echo “🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}.”
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Display Repository Cloning Information
+        run: echo “💡 The ${{ github.repository }} repository has been cloned to the runner.”
+      - name: Display Workflow Readiness
+        run: echo “🖥️ The workflow is now ready to test your code on the runner.”
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+          cd backend && npm test
+      - name: Display Job Status
+        run: echo “🍏 This job’s status is ${{ job.status }}.”
