@@ -10,7 +10,7 @@ export const register = async (formData) => {
     return token;
   } catch (error) {
     // Handle error
-    throw error;
+    throw error.response.data.error;
   }
 };
 
@@ -22,6 +22,6 @@ export const login = async (formData) => {
     return token;
   } catch (error) {
     // Handle error
-    throw error;
+    throw error.response.data.error;
   }
 };

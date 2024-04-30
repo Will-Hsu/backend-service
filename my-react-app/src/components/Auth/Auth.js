@@ -15,6 +15,7 @@ import Input from "./Input";
 // import Icon from "./Icon";
 import { useNavigate } from "react-router-dom";
 import { login, register } from "../../services/auth";
+import Alert from "@material-ui/lab/Alert";
 
 const initialState = {
   firstName: "",
@@ -26,6 +27,7 @@ const initialState = {
 
 const Auth = ({ newUser }) => {
   const classes = useStyles();
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState(initialState);
   const [isSignup, setSignup] = useState(newUser);
   const [showPassword, setShowPassword] = useState(false);
@@ -40,6 +42,7 @@ const Auth = ({ newUser }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setError("");
       // Call register function from auth.js
       const response = isSignup
         ? await register(formData)
@@ -55,9 +58,10 @@ const Auth = ({ newUser }) => {
       // Handle successful registration
       console.log("Authenticated successfully", token);
       navigate("/profile");
-    } catch (error) {
+    } catch (err) {
       // Handle error
-      console.error("Error occurred:", error);
+      console.error("Error occurred:", err);
+      setError(err);
     }
   };
 
@@ -125,6 +129,14 @@ const Auth = ({ newUser }) => {
               />
             )}
           </Grid>
+          {error.length > 0 && (
+            <Alert
+              severity="error"
+              className={classes.alert}
+            >
+              {error}
+            </Alert>
+          )}
           <Button
             type="submit"
             fullWidth
