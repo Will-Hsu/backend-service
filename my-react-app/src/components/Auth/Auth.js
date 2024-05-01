@@ -33,6 +33,7 @@ const Auth = ({ newUser }) => {
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => setShowPassword((prev) => !prev);
   const switchMode = () => {
+    setError("");
     setSignup((prev) => !prev);
     if (isSignup) navigate("/login");
     else navigate("/register");

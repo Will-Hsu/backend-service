@@ -1,0 +1,11 @@
+services:
+  my-react-app-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8123:80"
+    environment:
+      - NODE_ENV=production
+    stdin_open: true
+    tty: true
