@@ -14,10 +14,7 @@ describe("User Routes", () => {
 
   beforeAll(async () => {
     mongoServer = await MongoMemoryServer.create();
-    await mongoose.connect(mongoServer.getUri(), {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(mongoServer.getUri());
   });
 
   afterAll(async () => {

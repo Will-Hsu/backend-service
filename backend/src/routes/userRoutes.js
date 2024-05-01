@@ -1,11 +1,10 @@
 require("dotenv").config();
+const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const mongoose = require("mongoose");
 
-// let users = [];
 const secretKey = process.env.SECRET_KEY;
 
 // Define the user schema
