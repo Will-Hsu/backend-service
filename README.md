@@ -27,7 +27,7 @@ The service is tested with Jest, a JavaScript testing framework. Additionally, a
 3. Install dependencies: `npm install --openssl-legacy-provider`
 4. Access the application at `http://localhost:3000`
 
-## Features
+## Customer Facing Features
 
 - **Home Page:** Clear UI that directs users to either register or login.
 - **Register Users:** Register new users with a new account.
@@ -43,7 +43,7 @@ The backend service provides a REST API for interacting with the application. He
 
 You can use tools like Postman or cURL to test these endpoints.
 
-## CI/CD Pipline Setup using GitHub Actions
+## Technologies Used
 
 ## Contact
 
