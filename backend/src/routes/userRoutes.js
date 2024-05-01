@@ -38,24 +38,18 @@ router.post("/register", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new User({ password: hashedPassword, email, name });
-    // users.push(newUser);
     await newUser.save();
-
-    console.log(name, email);
 
     // Generate a login token for session keeping and send it along with the name back to the client
     const token = jwt.sign({ userName: name, email: email }, secretKey, {
       expiresIn: "1h",
     });
 
-    console.log(jwt.decode(token), token);
-
     res.status(201).json({
       message: "User registered successfully",
       token: { token },
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });

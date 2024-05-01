@@ -2,12 +2,29 @@ const request = require("supertest");
 const express = require("express");
 const bodyParser = require("body-parser");
 const userRoutes = require("../src/routes/userRoutes");
+const { MongoMemoryServer } = require("mongodb-memory-server");
+const mongoose = require("mongoose");
 
 const app = express();
 app.use(bodyParser.json());
 app.use("/user", userRoutes);
 
 describe("User Routes", () => {
+  let mongoServer;
+
+  beforeAll(async () => {
+    mongoServer = await MongoMemoryServer.create();
+    await mongoose.connect(mongoServer.getUri(), {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+  });
+
+  afterAll(async () => {
+    await mongoose.connection.close();
+    await mongoServer.stop();
+  });
+
   it("should register a new user", async () => {
     const userData = {
       name: "Maggie Moradi",
