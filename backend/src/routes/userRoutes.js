@@ -66,7 +66,6 @@ router.post("/login", async (req, res) => {
 
   // Find user by email
   const user = await User.findOne({ email });
-  // const user = users.find((user) => user.email === email);
 
   // Check if user exists
   if (!user) {
