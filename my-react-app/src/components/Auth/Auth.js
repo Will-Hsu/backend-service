@@ -48,9 +48,11 @@ const Auth = ({ newUser }) => {
         ? await register(formData)
         : await login(formData);
 
+      console.log("Response:", response.data.token);
       const { token } = response.data.token;
       const decoded = jwt_decode(token);
 
+      console.log(decoded);
       // Store token and user in local storage
       localStorage.setItem("user", decoded.userName);
       localStorage.setItem("token", token);

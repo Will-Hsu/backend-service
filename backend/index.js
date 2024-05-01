@@ -2,8 +2,11 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const userRoutes = require("./src/routes/userRoutes");
 const cors = require("cors");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 
 const app = express();
+dotenv.config();
 app.use(bodyParser.json());
 app.use(cors());
 
@@ -15,7 +18,11 @@ app.get("/", (req, res) => {
   res.send("Welcome to the API Backend server");
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+mongoose
+  .connect(process.env.CONNECTION_URL)
+  .then(() =>
+    app.listen(process.env.PORT, () =>
+      console.log(`Server running on port: ${process.env.PORT}`)
+    )
+  )
+  .catch((err) => console.log(err.message));

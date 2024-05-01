@@ -3,9 +3,19 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 
-let users = [];
+// let users = [];
 const secretKey = process.env.SECRET_KEY;
+
+// Define the user schema
+const userSchema = new mongoose.Schema({
+  password: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  name: { type: String, required: true },
+});
+
+const User = mongoose.model("User", userSchema);
 
 // Register a new user
 router.post("/register", async (req, res) => {
@@ -19,7 +29,7 @@ router.post("/register", async (req, res) => {
   }
 
   // Check if user already exists
-  if (users.find((user) => user.email === email)) {
+  if (await User.findOne({ email })) {
     return res.status(400).json({ error: "User already exists" });
   }
 
@@ -27,23 +37,25 @@ router.post("/register", async (req, res) => {
     // Hash and salt the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = { password: hashedPassword, email, name };
-    users.push(newUser);
+    const newUser = new User({ password: hashedPassword, email, name });
+    // users.push(newUser);
+    await newUser.save();
+
+    console.log(name, email);
 
     // Generate a login token for session keeping and send it along with the name back to the client
-    const token = jwt.sign(
-      { userName: newUser.name, email: newUser.email },
-      secretKey,
-      {
-        expiresIn: "1h",
-      }
-    );
+    const token = jwt.sign({ userName: name, email: email }, secretKey, {
+      expiresIn: "1h",
+    });
+
+    console.log(jwt.decode(token), token);
 
     res.status(201).json({
       message: "User registered successfully",
       token: { token },
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
@@ -60,7 +72,8 @@ router.post("/login", async (req, res) => {
   }
 
   // Find user by email
-  const user = users.find((user) => user.email === email);
+  const user = await User.findOne({ email });
+  // const user = users.find((user) => user.email === email);
 
   // Check if user exists
   if (!user) {
